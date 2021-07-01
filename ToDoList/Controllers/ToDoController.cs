@@ -68,5 +68,47 @@ namespace ToDoList.Controllers
             }
             return View(item);
         }
+        //GET /todo/delete/<id>
+        public async Task<IActionResult> Delete(int Id)
+        {
+            TodoListItem item = await context.ToDoList.FindAsync(Id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                context.ToDoList.Remove(item);
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+        //GET /todo/details/<id>
+        public async Task<IActionResult> Details(int Id)
+        {
+            TodoListItem item = await context.ToDoList.FindAsync(Id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(item);
+            }
+        }
+        //GET /<id>
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<TodoListItem>> GetTodoItem(int Id)
+        {
+            TodoListItem item = await context.ToDoList.FindAsync(Id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return item;
+        }
     }
 }
