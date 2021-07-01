@@ -16,5 +16,22 @@ namespace ToDoList.Models
         public string Description { get; set; }
         public DateTime DueDate { get; set; }
         public bool Completed { get; set; }
+
+        private int DescriptionLimit = 100;
+        [Display(Name = "Description")]
+        public string LimitedDescription
+        {
+            get
+            {
+                if (this.Description.Length > this.DescriptionLimit)
+                {
+                    return this.Description.Substring(0, this.DescriptionLimit) + "...";
+                }
+                else
+                {
+                    return this.Description;
+                }
+            }
+        }
     }
 }
