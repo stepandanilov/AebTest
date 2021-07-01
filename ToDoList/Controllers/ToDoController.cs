@@ -42,5 +42,31 @@ namespace ToDoList.Controllers
             }
             return View(item);
         }
+        //GET /todo/edit/<id>
+        public async Task<IActionResult> Edit(int Id)
+        {
+            TodoListItem item = await context.ToDoList.FindAsync(Id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+        //POST /todo/edit/<id>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(TodoListItem item)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Update(item);
+
+                await context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            return View(item);
+        }
     }
 }
